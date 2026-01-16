@@ -1,6 +1,10 @@
+import uuid
 from flask import Flask, jsonify, request
 
 app = Flask(__name__)
+
+# Static app ID generated once at startup
+APP_ID = str(uuid.uuid4())
 
 # In-memory storage for demo
 items = []
@@ -11,6 +15,7 @@ def home():
     """Home endpoint."""
     return jsonify({
         "message": "Welcome to Simple Flask App!",
+        "app_id": APP_ID,
         "endpoints": {
             "health": "/health",
             "items": "/items"
