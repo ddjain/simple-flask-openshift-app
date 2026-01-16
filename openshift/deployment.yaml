@@ -5,7 +5,6 @@ metadata:
   labels:
     app: simple-flask-app
   annotations:
-    # OpenShift annotation to trigger deployment on ImageStream changes
     image.openshift.io/triggers: |
       [{"from":{"kind":"ImageStreamTag","name":"simple-flask-app:latest"},
         "fieldPath":"spec.template.spec.containers[?(@.name==\"simple-flask-app\")].image"}]
@@ -25,6 +24,9 @@ spec:
           ports:
             - containerPort: 8080
               protocol: TCP
+          volumeMounts:
+            - name: data-volume
+              mountPath: /data
           livenessProbe:
             httpGet:
               path: /health
@@ -44,3 +46,7 @@ spec:
             limits:
               memory: "256Mi"
               cpu: "500m"
+      volumes:
+        - name: data-volume
+          persistentVolumeClaim:
+            claimName: flask-app-pvc
