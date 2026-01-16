@@ -1,13 +1,19 @@
-apiVersion: apps.openshift.io/v1
-kind: DeploymentConfig
+apiVersion: apps/v1
+kind: Deployment
 metadata:
   name: simple-flask-app
   labels:
     app: simple-flask-app
+  annotations:
+    # OpenShift annotation to trigger deployment on ImageStream changes
+    image.openshift.io/triggers: |
+      [{"from":{"kind":"ImageStreamTag","name":"simple-flask-app:latest"},
+        "fieldPath":"spec.template.spec.containers[?(@.name==\"simple-flask-app\")].image"}]
 spec:
   replicas: 1
   selector:
-    app: simple-flask-app
+    matchLabels:
+      app: simple-flask-app
   template:
     metadata:
       labels:
@@ -38,13 +44,3 @@ spec:
             limits:
               memory: "256Mi"
               cpu: "500m"
-  triggers:
-    - type: ConfigChange
-    - type: ImageChange
-      imageChangeParams:
-        automatic: true
-        containerNames:
-          - simple-flask-app
-        from:
-          kind: ImageStreamTag
-          name: simple-flask-app:latest
