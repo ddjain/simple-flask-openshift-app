@@ -16,7 +16,7 @@ items = []
 def home():
     """Home endpoint."""
     return jsonify({
-        "message": "Welcome to Simple Flask App!",
+        "message": "Welcome to Todo Flask App!",
         "app_id": APP_ID,
         "timestamp": datetime.utcnow().isoformat() + "Z",
         "endpoints": {
