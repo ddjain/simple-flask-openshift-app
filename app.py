@@ -6,6 +6,18 @@ app = Flask(__name__)
 items = []
 
 
+@app.route("/", methods=["GET"])
+def home():
+    """Home endpoint."""
+    return jsonify({
+        "message": "Welcome to Simple Flask App!",
+        "endpoints": {
+            "health": "/health",
+            "items": "/items"
+        }
+    })
+
+
 @app.route("/health", methods=["GET"])
 def health():
     """Health check endpoint."""
