@@ -1,0 +1,50 @@
+apiVersion: apps.openshift.io/v1
+kind: DeploymentConfig
+metadata:
+  name: simple-flask-app
+  labels:
+    app: simple-flask-app
+spec:
+  replicas: 1
+  selector:
+    app: simple-flask-app
+  template:
+    metadata:
+      labels:
+        app: simple-flask-app
+    spec:
+      containers:
+        - name: simple-flask-app
+          image: simple-flask-app:latest
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 3
+            periodSeconds: 5
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "100m"
+            limits:
+              memory: "256Mi"
+              cpu: "500m"
+  triggers:
+    - type: ConfigChange
+    - type: ImageChange
+      imageChangeParams:
+        automatic: true
+        containerNames:
+          - simple-flask-app
+        from:
+          kind: ImageStreamTag
+          name: simple-flask-app:latest
