@@ -1,4 +1,5 @@
 import uuid
+from datetime import datetime
 from flask import Flask, jsonify, request
 
 app = Flask(__name__)
@@ -17,6 +18,7 @@ def home():
     return jsonify({
         "message": "Welcome to Simple Flask App!",
         "app_id": APP_ID,
+        "timestamp": datetime.utcnow().isoformat() + "Z",
         "endpoints": {
             "health": "/health",
             "items": "/items"
