@@ -10,7 +10,7 @@ spec:
     kind: Deployment
     name: simple-flask-app
   minReplicas: 2
-  maxReplicas: 5
+  maxReplicas: 10
   metrics:
     # Scale based on CPU utilization
     - type: Resource
@@ -18,14 +18,14 @@ spec:
         name: cpu
         target:
           type: Utilization
-          averageUtilization: 10   # Very low threshold for easy testing
+          averageUtilization: 80
     # Scale based on Memory utilization
     - type: Resource
       resource:
         name: memory
         target:
           type: Utilization
-          averageUtilization: 15   # Very low threshold for easy testing
+          averageUtilization: 80   # Scale when memory exceeds 80% of request
   behavior:
     scaleUp:
       stabilizationWindowSeconds: 10   # Scale up quickly
@@ -34,8 +34,8 @@ spec:
           value: 2
           periodSeconds: 10
     scaleDown:
-      stabilizationWindowSeconds: 30   # Wait before scaling down
+      stabilizationWindowSeconds: 10  # Wait 10 second before scaling down
       policies:
         - type: Pods
           value: 1
-          periodSeconds: 30
+          periodSeconds: 30            # Scale down 30 seconds

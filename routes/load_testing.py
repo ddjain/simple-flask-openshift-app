@@ -24,7 +24,6 @@ def allocate_memory(mb):
     
     total_allocated = sum(len(c) for c in memory_hog) / (1024 * 1024)
     
-    # Import here to avoid circular import
     from app import APP_ID
     
     return jsonify({
@@ -43,7 +42,6 @@ def clear_memory():
     cleared = sum(len(c) for c in memory_hog) / (1024 * 1024)
     memory_hog = []
     
-    # Import here to avoid circular import
     from app import APP_ID
     
     return jsonify({
@@ -58,7 +56,6 @@ def load_status():
     """Get current memory load status."""
     total_allocated = sum(len(c) for c in memory_hog) / (1024 * 1024)
     
-    # Import here to avoid circular import
     from app import APP_ID
     
     return jsonify({

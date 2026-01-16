@@ -1,60 +1,36 @@
-import uuid
-from datetime import datetime
-from flask import Flask, jsonify, request
+"""
+Simple Flask Application for OpenShift Demo.
 
+This application demonstrates:
+- REST API endpoints
+- Health checks
+- Load testing for HPA
+- File operations
+"""
+
+import uuid
+from flask import Flask
+
+# Create Flask app
 app = Flask(__name__)
 
 # Static app ID generated once at startup
 APP_ID = str(uuid.uuid4())
 print(f"App started with ID: {APP_ID}", flush=True)
 
-# In-memory storage for demo
-items = []
 
-# Register load testing blueprint
-from load_testing import load_bp
-app.register_blueprint(load_bp)
-
-
-@app.route("/", methods=["GET"])
-def home():
-    """Home endpoint."""
-    return jsonify({
-        "message": "Welcome to Simple Flask App!",
-        "app_id": APP_ID,
-        "timestamp": datetime.utcnow().isoformat() + "Z",
-        "endpoints": {
-            "health": "/health",
-            "items": "/items",
-            "load_memory": "POST /load/memory/<mb>",
-            "clear_memory": "POST /load/memory/clear",
-            "load_status": "GET /load/status"
-        }
-    })
-
-
-@app.route("/health", methods=["GET"])
-def health():
-    """Health check endpoint."""
-    return jsonify({"status": "healthy"})
-
-
-@app.route("/items", methods=["GET"])
-def get_items():
-    """Get all items."""
-    return jsonify({"items": items})
-
-
-@app.route("/items", methods=["POST"])
-def create_item():
-    """Create a new item."""
-    data = request.get_json()
-    if not data or "name" not in data:
-        return jsonify({"error": "name is required"}), 400
+def register_blueprints(app):
+    """Register all blueprints with the app."""
+    from routes import main_bp, items_bp, load_bp, file_bp
     
-    item = {"id": len(items) + 1, "name": data["name"]}
-    items.append(item)
-    return jsonify(item), 201
+    app.register_blueprint(main_bp)
+    app.register_blueprint(items_bp)
+    app.register_blueprint(load_bp)
+    app.register_blueprint(file_bp)
+
+
+# Register all blueprints
+register_blueprints(app)
 
 
 if __name__ == "__main__":
