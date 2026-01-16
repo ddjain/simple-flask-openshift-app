@@ -11,17 +11,24 @@ print(f"App started with ID: {APP_ID}", flush=True)
 # In-memory storage for demo
 items = []
 
+# Register load testing blueprint
+from load_testing import load_bp
+app.register_blueprint(load_bp)
+
 
 @app.route("/", methods=["GET"])
 def home():
     """Home endpoint."""
     return jsonify({
-        "message": "Welcome to Todo Flask App!",
+        "message": "Welcome to Simple Flask App!",
         "app_id": APP_ID,
         "timestamp": datetime.utcnow().isoformat() + "Z",
         "endpoints": {
             "health": "/health",
-            "items": "/items"
+            "items": "/items",
+            "load_memory": "POST /load/memory/<mb>",
+            "clear_memory": "POST /load/memory/clear",
+            "load_status": "GET /load/status"
         }
     })
 
