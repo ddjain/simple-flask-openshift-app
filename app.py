@@ -5,6 +5,7 @@ app = Flask(__name__)
 
 # Static app ID generated once at startup
 APP_ID = str(uuid.uuid4())
+print(f"App started with ID: {APP_ID}")
 
 # In-memory storage for demo
 items = []
