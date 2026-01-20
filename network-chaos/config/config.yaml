@@ -1,0 +1,50 @@
+kraken:
+  kubeconfig_path: /home/krkn/.kube/config
+  exit_on_failure: False
+  publish_kraken_status: False
+  chaos_scenarios:
+    - pod_network_scenarios:
+        - /home/krkn/config/scenarios/pod_egress_shaping.yml
+
+cerberus:
+  cerberus_enabled: False
+
+performance_monitoring:
+  prometheus_url: ''
+  prometheus_bearer_token: ''
+  enable_alerts: False
+  enable_metrics: False
+  check_critical_alerts: False
+
+elastic:
+  enable_elastic: False
+
+tunings:
+  wait_duration: 60
+  iterations: 1
+  daemon_mode: False
+
+telemetry:
+  enabled: False
+  api_url: ''
+  archive_path: /tmp
+  prometheus_backup: False
+  full_prometheus_backup: False
+  logs_backup: False
+  events_backup: False
+  backup_threads: 5
+  run_tag: ''
+
+health_checks:
+  interval: 2
+  config: []
+
+kubevirt_checks:
+  interval: 5
+  namespace: default
+  name: ".*"
+  only_failures: False
+  disconnected: False
+  ssh_node: ""
+  node_names: ""
+  exit_on_failure: False

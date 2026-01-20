@@ -1,0 +1,11 @@
+- id: pod_egress_shaping
+  config:
+    namespace: default
+    label_selector: 'kubevirt.io=virt-launcher'
+    network_params:
+      latency: 60000ms
+      loss: '0.02'
+    execution_type: parallel
+    instance_count: 3
+    wait_duration: 120
+    test_duration: 120
