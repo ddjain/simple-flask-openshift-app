@@ -1,0 +1,12 @@
+- id: pod_network_outage
+  config:
+    namespace: default
+    label_selector: 'kubevirt.io=virt-launcher'
+    direction:
+      - egress
+    egress_ports:
+      - 53
+    instance_count: 7
+    wait_duration: 120
+    test_duration: 60
+    image: quay.io/krkn-chaos/krkn:tools

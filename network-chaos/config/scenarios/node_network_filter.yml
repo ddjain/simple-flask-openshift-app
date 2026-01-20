@@ -1,0 +1,7 @@
+- id: network_chaos
+  config:
+    label_selector: "node-role=worker"
+    egress: true
+    ports: [2309]
+    protocols: [tcp]
+    test_duration: 60
